@@ -53,5 +53,8 @@ public abstract class Pieza
         return SIMBOLOS[color.ordinal()][tipo.ordinal()];
     }
     
-    public 
+    public boolean agregarSiValido()
+    {
+        boolean resultado = false;
+    }
 }
