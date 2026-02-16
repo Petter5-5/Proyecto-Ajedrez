@@ -1,4 +1,4 @@
-package ajedrez.model.piezas;
+package ajedrez.model;
 
 /**
  *

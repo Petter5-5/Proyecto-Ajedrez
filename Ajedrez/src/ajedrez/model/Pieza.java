@@ -24,8 +24,8 @@ public abstract class Pieza
     private Color color;
     private Tipo tipo;
     private int fila;
-    private int columna;
-    private boolean aMovido;
+    private int col;
+    private boolean aMovido = false;
     
     private static String[][] SIMBOLOS = {
         { "♔", "♚" },
@@ -36,12 +36,12 @@ public abstract class Pieza
         { "♙", "♟" }
     };
     
-    public Pieza(Color color, Tipo tipo, int fila, int columna)
+    public Pieza(Color color, Tipo tipo, int fila, int col)
     {
         this.color = color;
         this.tipo = tipo;
         this.fila = fila;
-        this.columna = columna;
+        this.col = col;
     }
     
     
@@ -53,8 +53,70 @@ public abstract class Pieza
         return SIMBOLOS[color.ordinal()][tipo.ordinal()];
     }
     
-    public boolean agregarSiValido()
+    protected void agregarSiValido(List lista, Tablero tablero, int destinoFila, int destinoCol)
     {
-        boolean resultado = false;
+        if(Tablero.enRango(destinoFila, destinoCol))
+        {
+            Pieza destino = tablero.getPieza(destinoFila, destinoCol);
+            if(destino == null || destino.getColor() != this.color)
+            {
+                lista.add(new Movimiento(fila, col, destinoFila, destinoCol));
+            }
+        }
     }
+
+    protected void deslizar(List lista, Tablero tablero, int dFila, int dCol)
+    {
+        int f = fila + dFila;
+        int c = col + dCol;
+        
+        while(Tablero.enRango(f, c))
+        {
+            Pieza dest = tablero.getPieza(fila, col);
+            if(dest == null)
+                lista.add(new Movimiento(fila, col, f, c));
+            else
+            {
+                if(dest.getColor() != this.color)
+                    lista.add(new Movimiento(fila, col, f, c));
+                break;
+            }
+            f += dFila;
+            c += dCol;
+        }
+    }
+    
+    public Color getColor() {
+        return color;
+    }
+
+    public int getFila() {
+        return fila;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    public Tipo getTipo() {
+        return tipo;
+    }
+
+    public boolean isaMovido() {
+        return aMovido;
+    }
+
+    public void setFila(int fila) {
+        this.fila = fila;
+    }
+
+    public void setCol(int columna) {
+        this.col = col;
+    }
+
+    public void setaMovido(boolean aMovido) {
+        this.aMovido = aMovido;
+    }
+    
+    
 }
